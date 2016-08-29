@@ -1,0 +1,13 @@
+service: auth0-authorizer
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+
+defaults:
+ stage: dev
+ region: eu-west-1
+
+functions:
+  authorize:
+    handler: handler.defaultAuthorizer

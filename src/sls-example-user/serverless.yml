@@ -1,0 +1,56 @@
+service: example-user
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+
+defaults:
+ stage: dev
+ region: eu-west-1
+
+functions:
+  authorizer:
+    handler: handler.authorizer
+
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: user/{userId}/hello
+          method: get
+          cors: true
+          authorizer:
+            arn: auth0-authorizer:authorize
+            resultTtlInSeconds: 300
+            identitySource: method.request.header.Authorization
+            identityValidationExpression: Bearer .*
+      - http:
+          path: hello/{userId}
+          method: post
+          cors: true
+          authorizer:
+            name: authorizer
+            resultTtlInSeconds: 300
+            identitySource: method.request.header.Authorization
+            identityValidationExpression: Bearer .*
+
+resources:
+  Resources:
+    AgentsDynamo:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          # - AttributeName: rangeId
+          #   KeyType: RANGE
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          # - AttributeName: rangeId
+          #   AttributeType: S
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${stage}-${service}-user
