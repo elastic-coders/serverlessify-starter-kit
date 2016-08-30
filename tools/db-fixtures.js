@@ -20,7 +20,7 @@ export default async (args = {}) => {
     console.log('  Load fixtures in the local database. Options:');
     console.log(`  ${colors.gray('fixtureFiles')}: Fixture files path, can use wildcards (${fixtureFiles})`);
     console.log(`  ${colors.gray('dbEndpoint')}: Database endpoint (${dbEndpoint})`);
-    return;
+    return args;
   }
 
   const requestsItems = R.flatten(glob
@@ -54,4 +54,6 @@ export default async (args = {}) => {
         console.error(err);
       });
   }
+
+  return args;
 };

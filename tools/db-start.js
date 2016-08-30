@@ -17,7 +17,7 @@ export default async (args = {}) => {
     console.log('  Start the local dev database. Options:');
     console.log(`  ${colors.gray('port')}: Local DynamoDB server port (${port})`);
     console.log(`  ${colors.gray('inMemory')}: Use in memory local DynamoDB (${inMemory})`);
-    return;
+    return args;
   }
 
   const dynamodb = localDynamo.launch({
@@ -33,4 +33,6 @@ export default async (args = {}) => {
   console.log(`  Local DynamoDB running at endpoint ${colors.gray(endpoint)}`);
   console.log(`  Local DynamoDB shell at ${colors.gray(endpoint + '/shell')}`);
   console.log(`  DYNAMODB_ENDPOINT_URL has been set to ${colors.gray(endpoint)}`);
+
+  return args;
 };

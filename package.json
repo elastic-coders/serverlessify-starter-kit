@@ -4,19 +4,29 @@
   "version": "0.1.0",
   "description": "",
   "main": "src/index.js",
+  "ecTools": {
+    "clean": ["./dist/*"],
+    "copyPackage": {
+        "scripts": {
+            "start": "node ./server -- startServer"
+        }
+    },
+    "serveArgs": ["startServer"]
+  },
+  "main": "dist/server.js",
   "scripts": {
-    "start": "babel-node --eval \"require('./tools/get-args')().then(require('./tools/start')).catch(err => console.error(err.stack))\"",
     "lint": "eslint .",
-    "test": "babel-node node_modules/.bin/babel-istanbul cover node_modules/.bin/_mocha src/**/*.test.js -- -R spec --recursive",
-    "devtool": "webpack && devtool -r ./dist/server.js -- startServer exportGlobals",
-    "clean": "babel-node --eval \"require('./tools/get-args')().then(require('./tools/clean')).catch(err => console.error(err.stack))\"",
-    "copy": "babel-node --eval \"require('./tools/get-args')().then(require('./tools/copy')).catch(err => console.error(err.stack))\"",
-    "bundle": "babel-node --eval \"require('./tools/get-args')().then(require('./tools/bundle')).catch(err => console.error(err.stack))\"",
-    "build": "babel-node --eval \"require('./tools/get-args')().then(require('./tools/build')).catch(err => console.error(err.stack))\"",
-    "db:start": "babel-node --eval \"require('./tools/get-args')().then(require('./tools/db-start')).catch(err => console.error(err.stack))\"",
-    "db:prepare": "babel-node --eval \"require('./tools/get-args')().then(require('./tools/db-prepare')).catch(err => console.error(err.stack))\"",
-    "db:fixtures": "babel-node --eval \"require('./tools/get-args')().then(require('./tools/db-fixtures')).catch(err => console.error(err.stack))\"",
-    "image": "babel-node --eval \"require('./tools/get-args')().then(require('./tools/image')).catch(err => console.error(err.stack))\""
+    "test": "istanbul cover _mocha **/*.test.js -- -R spec --recursive",
+    "devtool": "npm run build && devtool -r ./dist/server.js",
+    "clean": "ec-tools clean",
+    "copy": "ec-tools copy",
+    "bundle": "ec-tools bundle",
+    "build": "ec-tools build",
+    "image": "ec-tools image",
+    "db:start": "babel-node --eval \"require('ec-node-tools')().then(require('./tools/db-start')).catch(err => console.error(err.stack))\"",
+    "db:prepare": "babel-node --eval \"require('ec-node-tools')().then(require('./tools/db-prepare')).catch(err => console.error(err.stack))\"",
+    "db:fixtures": "babel-node --eval \"require('ec-node-tools')().then(require('./tools/db-fixtures')).catch(err => console.error(err.stack))\"",
+    "start": "babel-node --eval \"require('ec-node-tools')({ tool: 'serve' }).then(require('./tools/db-start')).then(require('./tools/db-prepare')).then(require('./tools/db-fixtures')).then(args => args.tool(args)).catch(err => console.error(err.stack))\""
   },
   "author": "Nicola Peduzzi <thenikso@gmail.com> (http://nikso.net)",
   "license": "MIT",

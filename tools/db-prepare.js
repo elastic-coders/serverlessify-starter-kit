@@ -24,7 +24,7 @@ export default async (args = {}) => {
     console.log(`  ${colors.gray('region')}: Serverless region (${region})`);
     console.log(`  ${colors.gray('dbEndpoint')}: Database endpoint (${dbEndpoint})`);
     console.log(`  ${colors.gray('dropExistingTables')}: Delete tables instead of keeping existing ones (${dropExistingTables})`);
-    return;
+    return args;
   }
 
   const env = {};
@@ -74,4 +74,6 @@ export default async (args = {}) => {
     console.log(`  Table ${colors.gray(tableConf.TableName)} creation`);
     await db.createTable(tableConf).promise();
   }
+
+  return args;
 };
