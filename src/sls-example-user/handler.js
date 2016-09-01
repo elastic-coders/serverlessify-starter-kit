@@ -15,6 +15,7 @@ export const hello = async (event) => {
       userId: event.path.userId
     }
   }).promise().then(resp => resp.data.Item);
+  await callService('example-greet.greet',)
   return `Hello ${user.firstname} ${user.lastname}`;
 };
 
