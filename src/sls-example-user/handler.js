@@ -10,10 +10,10 @@ const db = new AWS.DynamoDB.DocumentClient(dbOpts);
 
 export const hello = async (event) => {
   const user = await db.get({
-    TableName: 'dev-example-user',
+    TableName: 'dev-example-user-user',
     Key: {
-      userId: event.path.userId
-    }
+      userId: event.path.userId,
+    },
   }).promise().then(resp => resp.data.Item);
   await callService('example-greet.greet',)
   return `Hello ${user.firstname} ${user.lastname}`;

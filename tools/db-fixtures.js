@@ -6,7 +6,7 @@ import AWS from 'aws-sdk-promise';
 import R from 'ramda';
 
 export default async (args = {}) => {
-  console.log(colors.yellow(`Load DB fixtures...`)); // eslint-disable-line no-console
+  console.log(colors.yellow('Load DB fixtures...')); // eslint-disable-line no-console
 
   const { fixtureFiles, dbEndpoint } = Object.assign(
     {

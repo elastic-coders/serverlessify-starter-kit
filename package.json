@@ -4,13 +4,17 @@
   "version": "0.1.0",
   "description": "",
   "ecTools": {
-    "clean": ["./dist/*"],
+    "clean": [
+      "./dist/*"
+    ],
     "copyPackage": {
-        "scripts": {
-            "start": "node ./server -- startServer"
-        }
+      "scripts": {
+        "start": "node ./server -- startServer"
+      }
     },
-    "serveArgs": ["startServer"]
+    "serveArgs": [
+      "startServer"
+    ]
   },
   "main": "dist/server.js",
   "scripts": {
@@ -46,6 +50,7 @@
     "chai": "3.5.0",
     "devtool": "^2.2.0",
     "dockerode": "2.3.0",
+    "ec-node-tools": "0.2.1",
     "eslint": "3.3.1",
     "fs-extra-promise": "0.4.0",
     "gaze": "1.1.1",
@@ -57,12 +62,12 @@
     "local-dynamo": "0.4.1",
     "mocha": "3.0.2",
     "mockery": "1.7.0",
+    "serverless": "1.0.0-rc.1",
     "sinon": "1.17.5",
     "sinon-chai": "2.8.0",
     "tar-fs": "1.13.2",
     "webpack": "^1.13.2",
-    "yaml-loader": "^0.4.0",
-    "ec-node-tools": "0.2.1"
+    "yaml-loader": "^0.4.0"
   },
   "dependencies": {
     "auth0": "2.3.1",

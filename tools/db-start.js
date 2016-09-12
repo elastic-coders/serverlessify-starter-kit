@@ -3,8 +3,6 @@ import colors from 'colors/safe';
 import fse from 'fs-extra-promise';
 
 export default async (args = {}) => {
-  console.log(colors.yellow(`Start ${inMemory ? 'in memory' : 'local'} DB...`)); // eslint-disable-line no-console
-
   const { inMemory, port } = Object.assign(
     {
       inMemory: false,
@@ -12,6 +10,8 @@ export default async (args = {}) => {
     },
     args
   );
+
+  console.log(colors.yellow(`Start ${inMemory ? 'in memory' : 'local'} DB...`)); // eslint-disable-line no-console
 
   if (args.help) {
     console.log('  Start the local dev database. Options:');

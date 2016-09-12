@@ -6,7 +6,7 @@ import R from 'ramda';
 import AWS from 'aws-sdk-promise';
 
 export default async (args = {}) => {
-  console.log(colors.yellow(`Prepare DB...`)); // eslint-disable-line no-console
+  console.log(colors.yellow('Prepare DB...')); // eslint-disable-line no-console
 
   const { projectPath, stage, region, dbEndpoint, dropExistingTables } = Object.assign(
     {
