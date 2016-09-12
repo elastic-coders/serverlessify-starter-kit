@@ -1,8 +1,8 @@
 {
   "name": "serverlessify-backend",
   "private": true,
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.1.1",
+  "description": "A starter kit to write a serverlessify backend",
   "ecTools": {
     "clean": [
       "./dist/*"
