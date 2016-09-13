@@ -1,7 +1,7 @@
 {
   "name": "serverlessify-backend",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A starter kit to write a serverlessify backend",
   "ecTools": {
     "clean": [
@@ -50,7 +50,7 @@
     "chai": "3.5.0",
     "devtool": "^2.2.0",
     "dockerode": "2.3.0",
-    "ec-node-tools": "0.2.1",
+    "ec-node-tools": "0.2.2",
     "eslint": "3.3.1",
     "fs-extra-promise": "0.4.0",
     "gaze": "1.1.1",
@@ -79,6 +79,6 @@
     "express": "4.14.0",
     "moment": "2.14.1",
     "ramda": "0.22.1",
-    "serverlessify": "0.3.0"
+    "serverlessify": "0.4.0"
   }
 }

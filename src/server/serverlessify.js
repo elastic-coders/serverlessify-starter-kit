@@ -11,7 +11,10 @@ const normalizeLambda = (func) => (event, context, cb) => new Promise((resolve, 
 
 export default ({ http, authorizers, authCache }) => serverlessify({
   html: (method, path, handlers) => {
-    console.log(`  ${method.toUpperCase()} - http://localhost:${http.get('port')}${path}`);
+    const normalizedMethod = method.toUpperCase();
+    if (normalizedMethod !== 'OPTIONS') {
+      console.log(`  ${normalizedMethod} - http://localhost:${http.get('port')}${path}`);
+    }
     http[method](path, ...handlers)
   },
   wrapLambda: normalizeLambda,
