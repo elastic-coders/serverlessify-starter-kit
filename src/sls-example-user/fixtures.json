@@ -1,5 +1,5 @@
 {
-  "dev-example-user": [
+  "dev-example-user-user": [
     { "userId": "auth0|57b1e4c51baeecc72b8427be", "firstname": "test", "lastname": "user" }
   ]
 }
