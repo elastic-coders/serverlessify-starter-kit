@@ -10,15 +10,17 @@ const normalizeLambda = (func) => (event, context, cb) => new Promise((resolve, 
 );
 
 export default ({ http, authorizers, authCache }) => serverlessify({
-  html: (method, path, handlers) => {
-    const normalizedMethod = method.toUpperCase();
-    if (normalizedMethod !== 'OPTIONS') {
-      console.log(`  ${normalizedMethod} - http://localhost:${http.get('port')}${path}`);
-    }
-    http[method](path, ...handlers)
+  http: {
+    eventHandler: (method, path, handlers) => {
+      const normalizedMethod = method.toUpperCase();
+      if (normalizedMethod !== 'OPTIONS') {
+        console.log(`  ${normalizedMethod} - http://localhost:${http.get('port')}${path}`);
+      }
+      http[method](path, ...handlers)
+    },
+    wrapLambda: normalizeLambda,
+    authorizers,
+    authorizersCacheSet: authCache.setAuthCacheEntry,
+    authorizersCacheGet: authCache.getAuthCacheEntry,
   },
-  wrapLambda: normalizeLambda,
-  authorizers,
-  setCacheEntry: authCache.setAuthCacheEntry,
-  getCacheEntry: authCache.getAuthCacheEntry,
 });
