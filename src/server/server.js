@@ -2,6 +2,7 @@ import express from 'express';
 import serverlessify from './serverlessify';
 import AuthCache from './AuthCache';
 import colors from 'colors/safe';
+import bodyParser from 'body-parser';
 
 export default function createServer() {
   console.log(colors.gray('Serving:'));
@@ -11,6 +12,7 @@ export default function createServer() {
 
   http.set('port', (process.env.PORT || 3000));
   http.set('trust proxy', true);
+  http.use(bodyParser.json());
 
   const sls = serverlessify({
     http,
