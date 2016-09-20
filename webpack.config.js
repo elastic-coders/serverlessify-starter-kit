@@ -33,10 +33,6 @@ module.exports = {
         test: /\.jsx?$/,
         include: path.resolve(__dirname, './src'),
         loader: 'babel',
-        query: {
-          presets: ['es2015', 'stage-0'],
-          plugins: ['transform-runtime'],
-        },
       },
       {
         test: /\.json$/,
