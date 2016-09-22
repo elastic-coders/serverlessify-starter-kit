@@ -2,7 +2,7 @@ import colors from 'colors/safe';
 import path from 'path';
 import glob from 'glob';
 import fs from 'fs';
-import AWS from 'aws-sdk-promise';
+import AWS from 'aws-sdk';
 import R from 'ramda';
 
 export default async (args = {}) => {
