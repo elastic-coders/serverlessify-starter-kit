@@ -3,7 +3,7 @@ import { isServerless, loadServerless } from './lib/sls'
 import glob from 'glob';
 import path from 'path';
 import R from 'ramda';
-import AWS from 'aws-sdk-promise';
+import AWS from 'aws-sdk';
 
 export default async (args = {}) => {
   console.log(colors.yellow('Prepare DB...')); // eslint-disable-line no-console
@@ -59,7 +59,7 @@ export default async (args = {}) => {
     endpoint: new AWS.Endpoint(dbEndpoint),
   });
 
-  const existingTables = await db.listTables().promise().then(R.path(['data', 'TableNames']));
+  const existingTables = await db.listTables().promise().then(R.path(['TableNames']));
 
   for (let tableConf of dbTableConfigs) {
     if (existingTables.indexOf(tableConf.TableName) >= 0) {

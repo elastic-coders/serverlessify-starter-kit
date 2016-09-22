@@ -72,8 +72,7 @@
   },
   "dependencies": {
     "auth0": "2.3.1",
-    "aws-sdk": "2.5.3",
-    "aws-sdk-promise": "0.0.2",
+    "aws-sdk": "2.6.4",
     "babel-polyfill": "6.13.0",
     "babel-runtime": "6.11.6",
     "body-parser": "^1.15.2",

@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk-promise';
+import AWS from 'aws-sdk';
 
 const dbOpts = process.env.NODE_ENV === 'production' ? {} : {
   region: 'eu-west-1',
@@ -14,7 +14,7 @@ export const hello = async (event) => {
     Key: {
       userId: event.path.userId,
     },
-  }).promise().then(resp => resp.data.Item);
+  }).promise().then(resp => resp.Item);
   await callService('example-greet.greet',)
   return `Hello ${user.firstname} ${user.lastname}`;
 };
