@@ -6,7 +6,10 @@ const normalizeLambda = (func) => (event, context, cb) => new Promise((resolve, 
     .then(r => resolve(r), e => reject(e))
 ).then(
   resp => cb(null, resp),
-  err => cb(err)
+  err => {
+    console.log(err);
+    cb(err);
+  }
 );
 
 export default ({ http, authorizers, authCache }) => serverlessify({
