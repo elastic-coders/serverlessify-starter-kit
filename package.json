@@ -19,7 +19,7 @@
   "main": "dist/server.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "istanbul cover _mocha **/*.test.js -- -R spec --recursive",
+    "test": "babel-node node_modules/.bin/babel-istanbul cover _mocha src/**/*.test.js -- -R spec --recursive",
     "devtool": "npm run build && devtool -r ./dist/server.js",
     "clean": "ec-tools clean",
     "copy": "ec-tools copy",
@@ -57,7 +57,6 @@
     "gaze": "1.1.1",
     "git-describe": "3.0.2",
     "glob": "7.0.6",
-    "istanbul": "0.4.5",
     "js-yaml": "3.6.1",
     "json-loader": "^0.5.4",
     "local-dynamo": "0.4.1",
