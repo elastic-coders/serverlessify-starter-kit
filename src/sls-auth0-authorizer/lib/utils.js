@@ -10,12 +10,17 @@ export function getAuth0Client() {
   }
 
   return new AuthenticationClient({
-    domain    : process.env.AUTH0_DOMAIN,
-    clientId  : process.env.AUTH0_CLIENT_ID,
+    domain: process.env.AUTH0_DOMAIN,
+    clientId: process.env.AUTH0_CLIENT_ID,
   });
 }
 
-const methodScopeRegEx = /^arn:aws:execute-api:(?:.+?):(?:.+?):(?:.+?)\/(?:.+?)\/(GET|PUT|HEAD|PATCH|POST|DELETE|OPTIONS)\/(.+?)\/(.+?)(?:$|\/)/;
+const methodScopeRegEx = new RegExp([
+  '^arn:aws:execute-api:',
+  '(?:.+?):(?:.+?):(?:.+?)/(?:.+?)/',
+  '(GET|PUT|HEAD|PATCH|POST|DELETE|OPTIONS)',
+  '/(.+?)/(.+?)(?:$|/)/',
+].join(''));
 
 // methodArn: 'arn:aws:execute-api:eu-west-1:143524343865:uu5kjavccg/dev/GET/user/999/param/333'
 export function getMethodScope(arn) {
@@ -32,19 +37,17 @@ export function getMethodScope(arn) {
 }
 
 export function getBearerToken(event) {
-  let token;
-
   if (!event.type || event.type !== 'TOKEN') {
     throw new Error('Expected `event.type` parameter to have value TOKEN');
   }
 
-  var tokenString = event.authorizationToken;
+  const tokenString = event.authorizationToken;
   if (!tokenString) {
     throw new Error('Expected `event.authorizationToken` parameter to be set');
   }
 
-  var match = tokenString.match(/^Bearer (.*)$/);
-  if (! match || match.length < 2) {
+  const match = tokenString.match(/^Bearer (.*)$/);
+  if (!match || match.length < 2) {
     throw new Error('Invalid Authorization token');
   }
 
@@ -68,13 +71,13 @@ export function getUserInfo(userInfo) {
 }
 
 export function generatePolicyDocument(principalId, effect, resource) {
-  var authResponse = {};
+  const authResponse = {};
   authResponse.principalId = principalId;
   if (effect && resource) {
-    var policyDocument = {};
+    const policyDocument = {};
     policyDocument.Version = '2012-10-17'; // default version
     policyDocument.Statement = [];
-    var statementOne = {};
+    const statementOne = {};
     statementOne.Action = 'execute-api:Invoke'; // default action
     statementOne.Effect = effect;
     statementOne.Resource = resource;
@@ -85,8 +88,9 @@ export function generatePolicyDocument(principalId, effect, resource) {
   return authResponse;
 }
 
-export const generateAuthorizer = ({ resource, onlyUserId, isPublic }) => ({ userId, isAdmin }) => generatePolicyDocument(
-  userId,
-  (isPublic || isAdmin || userId === onlyUserId) ? 'Allow' : 'Deny',
-  resource
-);
+export const generateAuthorizer = ({ resource, onlyUserId, isPublic }) =>
+  ({ userId, isAdmin }) => generatePolicyDocument(
+    userId,
+    (isPublic || isAdmin || userId === onlyUserId) ? 'Allow' : 'Deny',
+    resource
+  );

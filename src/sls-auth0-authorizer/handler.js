@@ -9,7 +9,7 @@ import {
 let auth0;
 const ACCESS_TOKEN_LENGTH = 16;
 
-export function defaultAuthorizer(event, context) {
+export function defaultAuthorizer(event) {
   const methodScope = getMethodScope(event.methodArn);
   const getAuthorization = generateAuthorizer({
     resource: event.methodArn,

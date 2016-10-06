@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const webpack = require('webpack');
 const baseConfig = require('./webpack.config.js');
 

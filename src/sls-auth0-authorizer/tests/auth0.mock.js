@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const sinon = require('sinon');
 
 const AuthenticationClientMock = {
@@ -12,7 +13,7 @@ const AuthenticationClient = sinon.stub().returns(AuthenticationClientMock);
 
 const auth0Mock = {
   AuthenticationClient,
-  _resetSpies() {
+  $resetSpies() {
     AuthenticationClientMock.users.getInfo.reset();
     AuthenticationClientMock.tokens.getInfo.reset();
   },

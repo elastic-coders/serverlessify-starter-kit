@@ -1,3 +1,4 @@
+/* eslint-disable no-console,import/no-extraneous-dependencies */
 import colors from 'colors/safe';
 import path from 'path';
 import glob from 'glob';
@@ -26,11 +27,11 @@ export default async (args = {}) => {
   const requestsItems = R.flatten(glob
     .sync(fixtureFiles)
     .map(f => JSON.parse(fs.readFileSync(f, 'utf8')))
-    .map(f => {
+    .map((fixture) => {
       const RequestItems = {};
-      for (let TableName in f) {
-        RequestItems[TableName] = f[TableName].map(Item => ({ PutRequest: { Item } }));
-      }
+      Object.keys(fixture).forEach((TableName) => {
+        RequestItems[TableName] = fixture[TableName].map(Item => ({ PutRequest: { Item } }));
+      });
       return RequestItems;
     })
   );
@@ -42,18 +43,18 @@ export default async (args = {}) => {
     ),
   });
 
-  for (let RequestItems of requestsItems) {
-    console.log(`  Add fixtures for ${colors.gray(R.keys(RequestItems).join(', '))}`)
+  await Promise.all(Object.keys(requestsItems).map(async (RequestItems) => {
+    console.log(`  Add fixtures for ${colors.gray(R.keys(RequestItems).join(', '))}`);
     await db
       .batchWrite({
         RequestItems,
         ReturnItemCollectionMetrics: 'COUNT',
       })
       .promise()
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
       });
-  }
+  }));
 
   return args;
 };

@@ -15,36 +15,18 @@ export const hello = async (event) => {
       userId: event.path.userId,
     },
   }).promise().then(resp => resp.Item);
-  await callService('example-greet.greet',)
+  // await callService('example-greet.greet')
   return `Hello ${user.firstname} ${user.lastname}`;
 };
 
-// This is an example custom authorizer
-export const authorizer = (event, context, cb) => {
-  var token = (/Bearer (.*)/.exec(event.authorizationToken) || [null, event.authorizationToken])[1];
-  switch (token) {
-  case 'allow':
-    cb(null, generatePolicy('user', 'Allow', event.methodArn));
-    break;
-  case 'deny':
-    cb(null, generatePolicy('user', 'Deny', event.methodArn));
-    break;
-  case 'unauthorized':
-    cb(new Error('Unauthorized'));
-    break;
-  default:
-    cb(new Error('error'));
-  }
-};
-
 function generatePolicy(principalId, effect, resource) {
-  var authResponse = {};
+  const authResponse = {};
   authResponse.principalId = principalId;
   if (effect && resource) {
-    var policyDocument = {};
+    const policyDocument = {};
     policyDocument.Version = '2012-10-17'; // default version
     policyDocument.Statement = [];
-    var statementOne = {};
+    const statementOne = {};
     statementOne.Action = 'execute-api:Invoke'; // default action
     statementOne.Effect = effect;
     statementOne.Resource = resource;
@@ -54,4 +36,23 @@ function generatePolicy(principalId, effect, resource) {
   return authResponse;
 }
 
-
+// This is an example custom authorizer
+export const authorizer = (event, context, cb) => {
+  const token = (
+    /Bearer (.*)/.exec(event.authorizationToken) ||
+    [null, event.authorizationToken]
+  )[1];
+  switch (token) {
+    case 'allow':
+      cb(null, generatePolicy('user', 'Allow', event.methodArn));
+      break;
+    case 'deny':
+      cb(null, generatePolicy('user', 'Deny', event.methodArn));
+      break;
+    case 'unauthorized':
+      cb(new Error('Unauthorized'));
+      break;
+    default:
+      cb(new Error('error'));
+  }
+};

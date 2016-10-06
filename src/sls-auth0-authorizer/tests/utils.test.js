@@ -1,9 +1,8 @@
-import chai, { expect } from 'chai';
-import sinon from 'sinon';
+/* eslint-disable global-require,import/no-extraneous-dependencies */
+import { expect } from 'chai';
 import mockery from 'mockery';
-chai.use(require('sinon-chai'));
 
-import makeAuth0Mock from './auth0.mock.js';
+import makeAuth0Mock from './auth0.mock';
 
 describe('auth0-authorizer/utils', () => {
   let auth0Mock;
@@ -23,7 +22,7 @@ describe('auth0-authorizer/utils', () => {
   });
 
   beforeEach(() => {
-    auth0Mock._resetSpies();
+    auth0Mock.$resetSpies();
   });
 
   it('should define utils functions', () => {

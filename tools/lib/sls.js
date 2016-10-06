@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import SlsVariables from 'serverless/lib/classes/Variables';
 import path from 'path';
 import fs from 'fs';

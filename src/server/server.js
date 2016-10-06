@@ -1,8 +1,9 @@
+/* eslint-disable global-require,no-console */
 import express from 'express';
-import serverlessify from './serverlessify';
-import AuthCache from './AuthCache';
 import colors from 'colors/safe';
 import bodyParser from 'body-parser';
+import serverlessify from './serverlessify';
+import AuthCache from './AuthCache';
 
 export default function createServer() {
   console.log(colors.gray('Serving:'));
@@ -35,7 +36,7 @@ export default function createServer() {
   );
 
   const startServer = () => http.listen(http.get('port'), () => {
-    console.log(colors.green('🌍  Http server running http://0.0.0.0:' + http.get('port'))); // eslint-disable-line no-console
+    console.log(colors.green(`🌍  Http server running http://0.0.0.0:${http.get('port')}`));
     if (process.send) {
       process.send('online');
     }

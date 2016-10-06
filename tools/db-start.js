@@ -1,6 +1,6 @@
+/* eslint-disable no-console,import/no-extraneous-dependencies */
 import localDynamo from 'local-dynamo';
 import colors from 'colors/safe';
-import fse from 'fs-extra-promise';
 
 export default async (args = {}) => {
   const { inMemory, port } = Object.assign(
@@ -11,7 +11,7 @@ export default async (args = {}) => {
     args
   );
 
-  console.log(colors.yellow(`Start ${inMemory ? 'in memory' : 'local'} DB...`)); // eslint-disable-line no-console
+  console.log(colors.yellow(`Start ${inMemory ? 'in memory' : 'local'} DB...`));
 
   if (args.help) {
     console.log('  Start the local dev database. Options:');
@@ -22,7 +22,7 @@ export default async (args = {}) => {
 
   const dynamodb = localDynamo.launch({
     dir: inMemory ? null : './',
-    port: port,
+    port,
     sharedDb: true,
   });
   process.on('exit', () => dynamodb.kill('SIGTERM'));
@@ -31,7 +31,7 @@ export default async (args = {}) => {
   process.env.DYNAMODB_ENDPOINT_URL = endpoint;
 
   console.log(`  Local DynamoDB running at endpoint ${colors.gray(endpoint)}`);
-  console.log(`  Local DynamoDB shell at ${colors.gray(endpoint + '/shell')}`);
+  console.log(`  Local DynamoDB shell at ${colors.gray(`${endpoint}/shell`)}`);
   console.log(`  DYNAMODB_ENDPOINT_URL has been set to ${colors.gray(endpoint)}`);
 
   return args;

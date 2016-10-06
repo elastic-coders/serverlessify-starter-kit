@@ -5,7 +5,7 @@ export default class AuthCache {
     this.authCache = {};
   }
 
-  setAuthCacheEntry = ({key, value, ttl}, cb) => {
+  setAuthCacheEntry = ({ key, value, ttl }, cb) => {
     this.authCache[key] = {
       value,
       expires: moment().add(ttl, 'seconds'),

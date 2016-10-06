@@ -1,12 +1,13 @@
+/* eslint-disable no-console,import/no-extraneous-dependencies */
 import colors from 'colors/safe';
-import { isServerless, loadServerless } from './lib/sls'
 import glob from 'glob';
 import path from 'path';
 import R from 'ramda';
 import AWS from 'aws-sdk';
+import { isServerless, loadServerless } from './lib/sls';
 
 export default async (args = {}) => {
-  console.log(colors.yellow('Prepare DB...')); // eslint-disable-line no-console
+  console.log(colors.yellow('Prepare DB...'));
 
   const { projectPath, stage, region, dbEndpoint, dropExistingTables } = Object.assign(
     {
@@ -39,17 +40,17 @@ export default async (args = {}) => {
     .sync(projectPath, {})
     .filter(isServerless)
     .map(s => loadServerless(s, env))
-    .map(s => {
-      const r = R.path(['resources', 'Resources'], s);
-      if (!r) {
+    .map((svs) => {
+      const resources = R.path(['resources', 'Resources'], svs);
+      if (!resources) {
         return [];
       }
       const res = [];
-      for (let k in r) {
-        if (r.hasOwnProperty(k) && r[k].Type === 'AWS::DynamoDB::Table') {
-          res.push(r[k].Properties);
+      Object.keys(resources).forEach((k) => {
+        if (resources[k].Type === 'AWS::DynamoDB::Table') {
+          res.push(resources[k].Properties);
         }
-      }
+      });
       return res;
     })
   );
@@ -61,19 +62,19 @@ export default async (args = {}) => {
 
   const existingTables = await db.listTables().promise().then(R.path(['TableNames']));
 
-  for (let tableConf of dbTableConfigs) {
+  await Promise.all(Object.keys(dbTableConfigs).map(async (tableConf) => {
     if (existingTables.indexOf(tableConf.TableName) >= 0) {
       if (dropExistingTables) {
         console.log(`  Table ${colors.gray(tableConf.TableName)} deletion`);
         await db.deleteTable({ TableName: tableConf.TableName }).promise();
       } else {
         console.log(`  Table ${colors.gray(tableConf.TableName)} already existing`);
-        continue;
+        return;
       }
     }
     console.log(`  Table ${colors.gray(tableConf.TableName)} creation`);
     await db.createTable(tableConf).promise();
-  }
+  }));
 
   return args;
 };
