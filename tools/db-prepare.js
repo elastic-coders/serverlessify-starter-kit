@@ -62,7 +62,7 @@ export default async (args = {}) => {
 
   const existingTables = await db.listTables().promise().then(R.path(['TableNames']));
 
-  await Promise.all(Object.keys(dbTableConfigs).map(async (tableConf) => {
+  await Promise.all(dbTableConfigs.map(async (tableConf) => {
     if (existingTables.indexOf(tableConf.TableName) >= 0) {
       if (dropExistingTables) {
         console.log(`  Table ${colors.gray(tableConf.TableName)} deletion`);

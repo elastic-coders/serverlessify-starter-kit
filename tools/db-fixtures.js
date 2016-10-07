@@ -43,7 +43,7 @@ export default async (args = {}) => {
     ),
   });
 
-  await Promise.all(Object.keys(requestsItems).map(async (RequestItems) => {
+  await Promise.all(requestsItems.map(async (RequestItems) => {
     console.log(`  Add fixtures for ${colors.gray(R.keys(RequestItems).join(', '))}`);
     await db
       .batchWrite({
