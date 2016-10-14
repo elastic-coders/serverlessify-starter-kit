@@ -13,6 +13,7 @@ const AuthenticationClient = sinon.stub().returns(AuthenticationClientMock);
 
 const auth0Mock = {
   AuthenticationClient,
+  AuthClientMock: AuthenticationClientMock,
   $resetSpies() {
     AuthenticationClientMock.users.getInfo.reset();
     AuthenticationClientMock.tokens.getInfo.reset();

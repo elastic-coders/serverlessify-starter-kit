@@ -15,12 +15,7 @@ export function getAuth0Client() {
   });
 }
 
-const methodScopeRegEx = new RegExp([
-  '^arn:aws:execute-api:',
-  '(?:.+?):(?:.+?):(?:.+?)/(?:.+?)/',
-  '(GET|PUT|HEAD|PATCH|POST|DELETE|OPTIONS)',
-  '/(.+?)/(.+?)(?:$|/)/',
-].join(''));
+const methodScopeRegEx = /^arn:aws:execute-api:(?:.+?):(?:.+?):(?:.+?)\/(?:.+?)\/(GET|PUT|HEAD|PATCH|POST|DELETE|OPTIONS)\/(.+?)\/(.+?)(?:$|\/)/;  // eslint-disable-line max-len
 
 // methodArn: 'arn:aws:execute-api:eu-west-1:143524343865:uu5kjavccg/dev/GET/user/999/param/333'
 export function getMethodScope(arn) {
@@ -54,12 +49,26 @@ export function getBearerToken(event) {
   return match[1];
 }
 
+const ACCESS_TOKEN_LENGTH = 16;
+
+export function getTokenData(token) {
+  const auth0 = getAuth0Client();
+  if (token.length === ACCESS_TOKEN_LENGTH) { // Auth0 v1 access_token (deprecated)
+    return auth0.users.getInfo(token);
+  } else if (token.length > ACCESS_TOKEN_LENGTH) { // (probably) Auth0 id_token
+    return auth0.tokens.getInfo(token);
+  }
+  throw new TypeError('Bearer token too short - expected >= 16 charaters');
+}
+
 export function getUserInfo(userInfo) {
   if (!userInfo || !userInfo.user_id) {
     throw new Error('No user_id returned from Auth0');
   }
 
   return {
+    email: userInfo.email,
+    emailVerified: userInfo.email_verified,
     userId: userInfo.user_id,
     isAdmin: (
       userInfo.app_metadata &&
@@ -89,8 +98,8 @@ export function generatePolicyDocument(principalId, effect, resource) {
 }
 
 export const generateAuthorizer = ({ resource, onlyUserId, isPublic }) =>
-  ({ userId, isAdmin }) => generatePolicyDocument(
+  ({ userId, isAdmin, emailVerified }) => generatePolicyDocument(
     userId,
-    (isPublic || isAdmin || userId === onlyUserId) ? 'Allow' : 'Deny',
+    (emailVerified && (isPublic || isAdmin || userId === onlyUserId)) ? 'Allow' : 'Deny',
     resource
   );
